@@ -1,3 +1,4 @@
+url = require 'url'
 AtomHandsonSumPreviewView = require './atom-handson-sum-preview-view'
 {CompositeDisposable} = require 'atom'
 
@@ -16,6 +17,24 @@ module.exports = AtomHandsonSumPreview =
     # Register command that toggles this view
     @subscriptions.add atom.commands.add 'atom-workspace', 'atom-handson-sum-preview:toggle': => @toggle()
 
+    # カスタムオープナーを定義
+    atom.workspace.addOpener (uriToOpen) ->
+      try
+        {protocol, host, pathname} = url.parse(uriToOpen)
+      catch error
+        return
+      return unless protocol is 'atom-handson-sum-preview:' # プロトコルがこのプラグインのプロトコルならビューを生成する
+
+      try
+        pathname = decodeURI(pathname) if pathname
+      catch error
+        return
+
+      {TextEditor} = require 'atom'
+      view = new TextEditor
+      view.setText "editorId: #{pathname.substring(1)}"
+      view
+
   deactivate: ->
     @modalPanel.destroy()
     @subscriptions.dispose()
@@ -25,4 +44,12 @@ module.exports = AtomHandsonSumPreview =
     atomHandsonSumPreviewViewState: @atomHandsonSumPreviewView.serialize()
 
   toggle: ->
-    atom.workspace.open()
+    editor = atom.workspace.getActiveTextEditor()
+    return unless editor?
+
+    atom.workspace.open(@uriForEditor editor)
+
+  # 新規メソッド
+  uriForEditor: (editor) ->
+    # プラグインのURI 例:atom-sum-preview://editor/1
+    "atom-handson-sum-preview://editor/#{editor.id}"
