@@ -12,6 +12,7 @@ module.exports = AtomHandsonSumPreview =
 
     # カスタムオープナーを定義
     atom.workspace.addOpener (uriToOpen) ->
+      console.log uriToOpen
       try
         {protocol, host, pathname} = url.parse(uriToOpen)
       catch error
@@ -23,10 +24,7 @@ module.exports = AtomHandsonSumPreview =
       catch error
         return
 
-      {TextEditor} = require 'atom'
-      view = new TextEditor
-      view.setText "editorId: #{pathname.substring(1)}"
-      view
+      new AtomHandsonSumPreviewView editorId: pathname.substring(1)
 
   deactivate: ->
     @subscriptions.dispose()

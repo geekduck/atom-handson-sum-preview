@@ -1,22 +1,14 @@
+{View} = require 'space-pen'
+
 module.exports =
-class AtomHandsonSumPreviewView
-  constructor: (serializedState) ->
-    # Create root element
-    @element = document.createElement('div')
-    @element.classList.add('atom-handson-sum-preview')
+  class AtomHandsonSumPreviewView extends View
+    @content: ->
+      @div class: 'atom-handson-sum-preview', =>
+        @div outlet: "container"
 
-    # Create message element
-    message = document.createElement('div')
-    message.textContent = "The AtomHandsonSumPreview package is Alive! It's ALIVE!"
-    message.classList.add('message')
-    @element.appendChild(message)
+    constructor: ({@editorId}) ->
+      super
+      @container.html "Hello World #{@editorId}"
 
-  # Returns an object that can be retrieved when package is activated
-  serialize: ->
-
-  # Tear down any state and detach
-  destroy: ->
-    @element.remove()
-
-  getElement: ->
-    @element
+    getTitle: ->
+      "#{@editorId} Sum Preview"
