@@ -25,9 +25,4 @@ module.exports = AtomHandsonSumPreview =
     atomHandsonSumPreviewViewState: @atomHandsonSumPreviewView.serialize()
 
   toggle: ->
-    console.log 'AtomHandsonSumPreview was toggled!'
-
-    if @modalPanel.isVisible()
-      @modalPanel.hide()
-    else
-      @modalPanel.show()
+    atom.workspace.open()
