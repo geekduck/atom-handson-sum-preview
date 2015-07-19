@@ -1,11 +1,9 @@
 {
   "name": "atom-handson-sum-preview",
   "main": "./lib/atom-handson-sum-preview",
-  "version": "0.0.0",
-  "description": "A short description of your package",
-  "keywords": [
-  ],
-  "repository": "https://github.com/atom/atom-handson-sum-preview",
+  "version": "0.0.1",
+  "description": "プレビュー元のテキストエディタから数値を抜き出して合計するプレビュープラグイン",
+  "repository": "https://github.com/geekduck/atom-handson-sum-preview",
   "license": "MIT",
   "engines": {
     "atom": ">=1.0.0 <2.0.0"
