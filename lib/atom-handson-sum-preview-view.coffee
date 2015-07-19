@@ -12,3 +12,6 @@ module.exports =
 
     getTitle: ->
       "#{@editorId} Sum Preview"
+
+    getURI: ->
+      "atom-handson-sum-preview://editor/#{@editorId}" if @editorId?

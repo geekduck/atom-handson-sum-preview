@@ -30,12 +30,38 @@ module.exports = AtomHandsonSumPreview =
     @subscriptions.dispose()
 
   toggle: ->
+    # プレビュー画面がアクティブ状態でtoggleされたら閉じる
+    if atom.workspace.getActivePaneItem() instanceof AtomHandsonSumPreviewView
+      atom.workspace.destroyActivePaneItem()
+      return
+
     editor = atom.workspace.getActiveTextEditor()
     return unless editor?
-
-    atom.workspace.open(@uriForEditor editor)
+    # editorに対応するプレビュー画面がすでに開かれていれば閉じ、そうでなければ開く
+    @addPreviewForEditor(editor) unless @removePreviewForEditor(editor)
 
   # 新規メソッド
   uriForEditor: (editor) ->
-    # プラグインのURI 例:atom-sum-preview://editor/1
+    # プラグインのURI 例:atom-handson-sum-preview://editor/1
     "atom-handson-sum-preview://editor/#{editor.id}"
+
+  removePreviewForEditor: (editor) ->
+    uri = @uriForEditor(editor)
+    # 開こうとしているURIですでに開かれてるビューがあれば閉じる
+    previewPane = atom.workspace.paneForURI(uri)
+    if previewPane?
+      previewPane.destroyItem(previewPane.itemForURI(uri))
+      true
+    else
+      false
+
+  addPreviewForEditor: (editor) ->
+    # URIを生成してopen
+    uri = @uriForEditor(editor)
+    previousActivePane = atom.workspace.getActivePane() # プレビュー元となるテキストエディタ
+    options =
+      split: 'right' # 画面を分割して右側に表示する
+      searchAllPanes: true
+    atom.workspace.open(uri, options).done (atomHandsonSumPreviewView) ->
+      if atomHandsonSumPreviewView instanceof AtomHandsonSumPreviewView
+        previousActivePane.activate() # プレビュー画面をアクティブにすると使いにくいので元のpaneをアクティブにする
