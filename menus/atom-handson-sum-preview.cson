@@ -1,0 +1,22 @@
+# See https://atom.io/docs/latest/hacking-atom-package-word-count#menus for more details
+'context-menu':
+  'atom-text-editor': [
+    {
+      'label': 'Toggle atom-handson-sum-preview'
+      'command': 'atom-handson-sum-preview:toggle'
+    }
+  ]
+'menu': [
+  {
+    'label': 'Packages'
+    'submenu': [
+      'label': 'atom-handson-sum-preview'
+      'submenu': [
+        {
+          'label': 'Toggle'
+          'command': 'atom-handson-sum-preview:toggle'
+        }
+      ]
+    ]
+  }
+]
