@@ -5,9 +5,6 @@
   "description": "A short description of your package",
   "keywords": [
   ],
-  "activationCommands": {
-    "atom-workspace": "atom-handson-sum-preview:toggle"
-  },
   "repository": "https://github.com/atom/atom-handson-sum-preview",
   "license": "MIT",
   "engines": {

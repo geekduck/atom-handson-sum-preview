@@ -3,6 +3,11 @@
 
 module.exports =
   class AtomHandsonSumPreviewView extends View
+    atom.deserializers.add(this)
+
+    @deserialize: (state) ->
+      new AtomHandsonSumPreviewView(state)
+
     @content: ->
       @div class: 'atom-handson-sum-preview', =>
         @div outlet: "container"
@@ -14,6 +19,10 @@ module.exports =
 
       if @editorId?
         @resolveEditor(@editorId)
+
+    serialize: ->
+      deserializer: 'AtomHandsonSumPreviewView'
+      editorId: @editorId
 
     # 新規メソッド イベント関連のオブジェクトを破棄
     destroy: ->
