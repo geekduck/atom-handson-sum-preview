@@ -3,18 +3,11 @@ AtomHandsonSumPreviewView = require './atom-handson-sum-preview-view'
 {CompositeDisposable} = require 'atom'
 
 module.exports = AtomHandsonSumPreview =
-  atomHandsonSumPreviewView: null
-  modalPanel: null
   subscriptions: null
 
   activate: (state) ->
-    @atomHandsonSumPreviewView = new AtomHandsonSumPreviewView(state.atomHandsonSumPreviewViewState)
-    @modalPanel = atom.workspace.addModalPanel(item: @atomHandsonSumPreviewView.getElement(), visible: false)
-
-    # Events subscribed to in atom's system can be easily cleaned up with a CompositeDisposable
+    # atom-sum-preview:toggleイベントをsubscribe
     @subscriptions = new CompositeDisposable
-
-    # Register command that toggles this view
     @subscriptions.add atom.commands.add 'atom-workspace', 'atom-handson-sum-preview:toggle': => @toggle()
 
     # カスタムオープナーを定義
@@ -36,12 +29,7 @@ module.exports = AtomHandsonSumPreview =
       view
 
   deactivate: ->
-    @modalPanel.destroy()
     @subscriptions.dispose()
-    @atomHandsonSumPreviewView.destroy()
-
-  serialize: ->
-    atomHandsonSumPreviewViewState: @atomHandsonSumPreviewView.serialize()
 
   toggle: ->
     editor = atom.workspace.getActiveTextEditor()
